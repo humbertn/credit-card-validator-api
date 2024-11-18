@@ -1,0 +1,16 @@
+services:
+  cc-validator-api:
+    container_name: cc-validator-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+    networks:
+      - api_network
+
+networks:
+  api_network:
+    driver: bridge

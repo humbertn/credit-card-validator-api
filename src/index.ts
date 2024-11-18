@@ -1,32 +1,33 @@
-import express, { Request, Response } from 'express';
+import express, {Request, Response } from 'express';
 import requestLogger from './middleware/requestLogger';
 
 const app = express();
 
 app.use(requestLogger);
 
-app.get('/validate/:cardNumber', (req: Request, res: Response) => {
+app.get('/validate/:cardNumber', (req: Request, res: Response): void => {
     const cardNumber: string = req.params.cardNumber;
 
     if (!cardNumber) {
-        return res.status(400).json({
+        res.status(400).json({
             error: 'Missing card number to validate.'
         });
+        return;
     }
 
     const isValid:boolean = isValidCardNumber(cardNumber);
 
-    return res.status(200).json({
+    res.status(200).json({
         isValid,
         message: `Credit Card is ${isValid ? "Valid!" : "Invalid!"}`
     });
 });
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response): void => {
     res.status(200).json({ status: 'Credit Card Validator is running!' });
-  });
+});
 
-const isValidCardNumber = (cardNumber: string):boolean => {    
+const isValidCardNumber = (cardNumber: string): boolean => {    
 
     if (!/^\d+$/.test(cardNumber)) {
         return false;
@@ -57,7 +58,7 @@ console.log(`[${timestamp}] - ${cardNumber} - ${sum}`);
 return sum % 10 === 0;
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
